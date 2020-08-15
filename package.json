@@ -15,16 +15,23 @@
 	],
 	"main": "./extension.js",
 	"contributes": {
+		"menus": {
+			"editor/context": [{
+				"command": "vscode-grepdef.grepdefword",
+				"category": "GrepDef",
+				"group": "navigation"
+			}]
+		},
 		"commands": [
 			{
 				"command": "vscode-grepdef.grepdefword",
 				"category": "GrepDef",
-				"title": "Search for the definition of the symbol under the cursor"
+				"title": "Grep for the definition of the symbol under the cursor"
 			},
 			{
 				"command": "vscode-grepdef.grepdef",
 				"category": "GrepDef",
-				"title": "Search for the definition of a symbol"
+				"title": "Grep for the definition of a symbol"
 			}
 		]
 	},
