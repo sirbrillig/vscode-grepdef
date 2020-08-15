@@ -58,12 +58,12 @@ async function runGrepDef(symbol) {
 		stderr = execOutput.stderr;
 	} catch ( error ) {
 		vscode.window.showErrorMessage(
-			'An error occurred while running grepdef: ' + error
+			'GrepDef: An error occurred while running grepdef: ' + error
 		);
 	}
 	if (stderr) {
 		vscode.window.showErrorMessage(
-			'An error occurred while running grepdef: ' + stderr
+			'GrepDef: An error occurred while running grepdef: ' + stderr
 		);
 	}
 	return stdout;
@@ -87,7 +87,7 @@ async function showPickerForMatches(symbol, matches) {
 		})
 		.filter(Boolean);
 	if (quickPickItems.length < 1) {
-		vscode.window.showErrorMessage(`No matches found for '${symbol}'`);
+		vscode.window.showErrorMessage(`GrepDef: No matches found for '${symbol}'`);
 		return;
 	}
 
@@ -99,13 +99,14 @@ async function showPickerForMatches(symbol, matches) {
 	input.matchOnDetail = true;
 	input.onDidChangeSelection((items) => (selectedItem = items[0]));
 	input.onDidAccept(() => openQuickPickItem(selectedItem));
+	input.onDidHide(() => input.dispose());
 	input.show();
 }
 
 function openQuickPickItem(item) {
 	if (!item.detail) {
 		vscode.window.showErrorMessage(
-			'Sorry, an error occurred opening that file.'
+			'GrepDef: Sorry, an error occurred opening that file.'
 		);
 		return;
 	}
@@ -119,7 +120,7 @@ async function openFileAtLine(fileAndLine) {
 	const [fileName, lineNumberString] = fileAndLine.split(':');
 	if (!fileName) {
 		vscode.window.showErrorMessage(
-			'Sorry, an error occurred opening that file.'
+			'GrepDef: Sorry, an error occurred opening that file.'
 		);
 		return;
 	}
