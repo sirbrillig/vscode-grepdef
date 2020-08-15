@@ -6,7 +6,7 @@ This is an extension for [vscode](https://code.visualstudio.com/) that integrate
 
 GrepDef can be used like "Go to definition", except that instead of using a language server, it just greps for the definition. This is less accurate but often faster on large projects.
 
-![GrepDef example](images/vscode-grepdef-example.gif)
+![GrepDef example](https://github.com/sirbrillig/vscode-grepdef/blob/master/images/vscode-grepdef-example.gif)
 
 There is a context menu as well as two commands that will show up in the Command Palette:
 
