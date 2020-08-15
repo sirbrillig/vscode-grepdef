@@ -71,7 +71,8 @@ async function showPickerForMatches(symbol, matches) {
 		})
 		.filter(Boolean);
 	if (quickPickItems.length < 1) {
-		// TODO: show error
+		vscode.window.showErrorMessage(`No matches found for '${symbol}'`);
+		return;
 	}
 
 	let selectedItem = quickPickItems[0];
@@ -87,7 +88,10 @@ async function showPickerForMatches(symbol, matches) {
 
 function openQuickPickItem(item) {
 	if (!item.detail) {
-		// TODO: show error
+		vscode.window.showErrorMessage(
+			'Sorry, an error occurred opening that file.'
+		);
+		return;
 	}
 	openFileAtLine(item.detail);
 }
@@ -98,7 +102,10 @@ function openQuickPickItem(item) {
 async function openFileAtLine(fileAndLine) {
 	const [fileName, lineNumberString] = fileAndLine.split(':');
 	if (!fileName) {
-		// TODO: show error
+		vscode.window.showErrorMessage(
+			'Sorry, an error occurred opening that file.'
+		);
+		return;
 	}
 	const lineNumber = lineNumberString ? parseInt(lineNumberString) : 0;
 	const document = await vscode.workspace.openTextDocument(fileName);
