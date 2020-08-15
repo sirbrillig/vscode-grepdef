@@ -14,19 +14,9 @@ function activate(context) {
 			const symbol = await vscode.window.showInputBox({
 				placeHolder: 'GrepDef',
 			});
-
-			const results = await runGrepDef(symbol);
-			const selectedFile = await vscode.window.showQuickPick(
-				results.split(/\n/)
-			);
-			if (selectedFile) {
-				const resultParts = selectedFile.split(':');
-				if (resultParts.length === 3) {
-					const fileName = resultParts[0];
-					const lineNumber = parseInt(resultParts[1]);
-					openFileAtLine(fileName, lineNumber);
-				}
-			}
+			const grepdefOutput = await runGrepDef(symbol);
+			const matches = grepdefOutput.split(/\n/);
+			showPickerForMatches(symbol, matches);
 		}
 	);
 
@@ -34,18 +24,9 @@ function activate(context) {
 		'vscode-grepdef.grepdefword',
 		async () => {
 			const symbol = getWordUnderCursor();
-			const results = await runGrepDef(symbol);
-			const selectedFile = await vscode.window.showQuickPick(
-				results.split(/\n/)
-			);
-			if (selectedFile) {
-				const resultParts = selectedFile.split(':');
-				if (resultParts.length === 3) {
-					const fileName = resultParts[0];
-					const lineNumber = parseInt(resultParts[1]);
-					openFileAtLine(fileName, lineNumber);
-				}
-			}
+			const grepdefOutput = await runGrepDef(symbol);
+			const matches = grepdefOutput.split(/\n/);
+			showPickerForMatches(symbol, matches);
 		}
 	);
 
@@ -73,11 +54,53 @@ async function runGrepDef(symbol) {
 }
 
 /**
- *
- * @param {string} fileName
- * @param {number} lineNumber
+ * @param {string[]} matches
  */
-async function openFileAtLine(fileName, lineNumber) {
+async function showPickerForMatches(symbol, matches) {
+	const quickPickItems = matches
+		.map((match) => {
+			const matchParts = match.split(':');
+			if (matchParts.length < 3) {
+				return null;
+			}
+			const item = {
+				label: matchParts[2],
+				detail: matchParts[0] + ':' + matchParts[1],
+			};
+			return item;
+		})
+		.filter(Boolean);
+	if (quickPickItems.length < 1) {
+		// TODO: show error
+	}
+
+	let selectedItem = quickPickItems[0];
+	const input = await vscode.window.createQuickPick();
+	input.items = quickPickItems;
+	input.title = `Matching definitions for '${symbol}'`;
+	input.placeholder = 'Filter matches';
+	input.matchOnDetail = true;
+	input.onDidChangeSelection((items) => (selectedItem = items[0]));
+	input.onDidAccept(() => openQuickPickItem(selectedItem));
+	input.show();
+}
+
+function openQuickPickItem(item) {
+	if (!item.detail) {
+		// TODO: show error
+	}
+	openFileAtLine(item.detail);
+}
+
+/**
+ * @param {string} fileAndLine
+ */
+async function openFileAtLine(fileAndLine) {
+	const [fileName, lineNumberString] = fileAndLine.split(':');
+	if (!fileName) {
+		// TODO: show error
+	}
+	const lineNumber = lineNumberString ? parseInt(lineNumberString) : 0;
 	const document = await vscode.workspace.openTextDocument(fileName);
 	await vscode.window.showTextDocument(document);
 	const editor = vscode.window.activeTextEditor;
