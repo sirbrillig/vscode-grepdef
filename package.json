@@ -10,11 +10,16 @@
 		"Other"
 	],
 	"activationEvents": [
+		"onCommand:vscode-grepdef.grepdefword",
 		"onCommand:vscode-grepdef.grepdef"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
+			{
+				"command": "vscode-grepdef.grepdefword",
+				"title": "GrepDef for word under cursor"
+			},
 			{
 				"command": "vscode-grepdef.grepdef",
 				"title": "GrepDef"
