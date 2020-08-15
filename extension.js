@@ -44,12 +44,28 @@ function deactivate() {}
  */
 async function runGrepDef(symbol) {
 	const options = ['--line-number'];
-	const grepdef = 'grepdef'; // TODO: make this configurable
+	const config = vscode.workspace.getConfiguration('vscode-grepdef');
+	const grepdef = config.get('grepdefPath', 'grepdef');
 	const workspaceDirectory = vscode.workspace.workspaceFolders[0].uri.fsPath;
 	const command = `${grepdef} ${options.join(
 		' '
 	)} "${symbol}" ${workspaceDirectory}`;
-	const { stdout } = await exec(command);
+	let stdout = '';
+	let stderr = '';
+	try {
+		const execOutput = await exec(command);
+		stdout = execOutput.stdout;
+		stderr = execOutput.stderr;
+	} catch ( error ) {
+		vscode.window.showErrorMessage(
+			'An error occurred while running grepdef: ' + error
+		);
+	}
+	if (stderr) {
+		vscode.window.showErrorMessage(
+			'An error occurred while running grepdef: ' + stderr
+		);
+	}
 	return stdout;
 }
 
