@@ -19,11 +19,6 @@ You must have [grepdef](https://github.com/sirbrillig/grepdef) installed.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `vscode-grepdef.grepdefPath`: The path to the `grepdef` executable. Defaults to just using `grepdef` which should work if it is installed globally.
