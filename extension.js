@@ -130,7 +130,7 @@ async function openFileAtLine(fileAndLine) {
 	const editor = vscode.window.activeTextEditor;
 	const range = editor.document.lineAt(lineNumber - 1).range;
 	editor.selection = new vscode.Selection(range.start, range.end);
-	editor.revealRange(range);
+	editor.revealRange(range, 1);
 }
 
 /**
