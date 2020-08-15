@@ -4,13 +4,14 @@ This is an extension for [vscode](https://code.visualstudio.com/) that integrate
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+GrepDef can be used like "Go to definition", except that instead of using a language server, it just greps for the definition. This is less accurate but often faster on large projects.
 
-For example if there is an image subfolder under your extension project workspace:
+![GrepDef example](images/vscode-grepdef-example.gif)
 
-\!\[feature X\]\(images/feature-x.png\)
+There is a context menu as well as two commands that will show up in the Command Palette:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- `GrepDef: Grep for the definition of the symbol under the cursor` which is the same as the context menu.
+- `GrepDef: Grep for the definition of a symbol` which will prompt for a symbol.
 
 ## Requirements
 
