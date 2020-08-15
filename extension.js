@@ -12,7 +12,7 @@ function activate(context) {
 		'vscode-grepdef.grepdef',
 		async () => {
 			const symbol = await vscode.window.showInputBox({
-				placeHolder: 'GrepDef',
+				placeHolder: 'Use grepdef to search for a symbol',
 			});
 			const grepdefOutput = await runGrepDef(symbol);
 			const matches = grepdefOutput.split(/\n/);

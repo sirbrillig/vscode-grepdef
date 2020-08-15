@@ -18,11 +18,13 @@
 		"commands": [
 			{
 				"command": "vscode-grepdef.grepdefword",
-				"title": "GrepDef for word under cursor"
+				"category": "GrepDef",
+				"title": "Search for the definition of the symbol under the cursor"
 			},
 			{
 				"command": "vscode-grepdef.grepdef",
-				"title": "GrepDef"
+				"category": "GrepDef",
+				"title": "Search for the definition of a symbol"
 			}
 		]
 	},
