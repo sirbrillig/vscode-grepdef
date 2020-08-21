@@ -14,6 +14,10 @@ function activate(context) {
 			const symbol = await vscode.window.showInputBox({
 				placeHolder: 'Use grepdef to search for a symbol',
 			});
+			const isVersionValid = await isGrepDefVersionValid();
+			if (!isVersionValid) {
+				return;
+			}
 			const grepdefOutput = await runGrepDef(symbol);
 			const matches = grepdefOutput.split(/\n/);
 			showPickerForMatches(symbol, matches);
@@ -24,6 +28,10 @@ function activate(context) {
 		'vscode-grepdef.grepdefword',
 		async () => {
 			const symbol = getWordUnderCursor();
+			const isVersionValid = await isGrepDefVersionValid();
+			if (!isVersionValid) {
+				return;
+			}
 			const grepdefOutput = await runGrepDef(symbol);
 			const matches = grepdefOutput.split(/\n/);
 			showPickerForMatches(symbol, matches);
@@ -56,7 +64,7 @@ async function runGrepDef(symbol) {
 		const execOutput = await exec(command);
 		stdout = execOutput.stdout;
 		stderr = execOutput.stderr;
-	} catch ( error ) {
+	} catch (error) {
 		vscode.window.showErrorMessage(
 			'GrepDef: An error occurred while running grepdef: ' + error
 		);
@@ -67,6 +75,33 @@ async function runGrepDef(symbol) {
 		);
 	}
 	return stdout;
+}
+
+/**
+ * @returns {Promise<boolean>}
+ */
+async function isGrepDefVersionValid() {
+	const options = ['--version'];
+	const config = vscode.workspace.getConfiguration('vscode-grepdef');
+	const grepdef = config.get('grepdefPath', 'grepdef');
+	const command = `${grepdef} ${options.join(' ')}`;
+	let stdout = '';
+	let isVersionValid = false;
+	try {
+		const execOutput = await exec(command);
+		stdout = execOutput.stdout;
+	} catch (error) {
+		isVersionValid = false;
+	}
+	if (/^grepdef \d+\.\d+\.\d+/.test(stdout)) {
+		isVersionValid = true;
+	}
+	if (!isVersionValid) {
+		vscode.window.showErrorMessage(
+			'You must install grepdef version 2.0 or newer: https://github.com/sirbrillig/grepdef#installing'
+		);
+	}
+	return isVersionValid;
 }
 
 /**
