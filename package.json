@@ -2,7 +2,7 @@
   "name": "vscode-grepdef",
   "displayName": "vscode-grepdef",
   "description": "VSCode extension for grepdef: search for symbol definitions in various programming languages",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "sirbrillig",
   "engines": {
     "vscode": "^1.48.0"
