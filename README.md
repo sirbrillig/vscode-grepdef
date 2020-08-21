@@ -13,9 +13,16 @@ There is a context menu as well as two commands that will show up in the Command
 - `GrepDef: Grep for the definition of the symbol under the cursor` which is the same as the context menu.
 - `GrepDef: Grep for the definition of a symbol` which will prompt for a symbol.
 
+## Commands
+
+This installs two commands:
+
+- `vscode-grepdef.grepdef`: Grep for the definition of a symbol
+- `vscode-grepdef.grepdefword`: Grep for the definition of the symbol under the cursor
+
 ## Requirements
 
-You must have [grepdef](https://github.com/sirbrillig/grepdef) installed.
+You must have [grepdef](https://github.com/sirbrillig/grepdef) installed (version 2.0 or newer).
 
 ## Extension Settings
 
